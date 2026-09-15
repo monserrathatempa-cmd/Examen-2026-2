@@ -1,4 +1,4 @@
-package mx.sauap;
+package mx.sauap.entidad;
 
 public class unidadesDeAprendizaje {
 }
