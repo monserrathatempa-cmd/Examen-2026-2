@@ -1,6 +1,7 @@
 package mx.sauap.entidad;
 
 import jakarta.persistence.*;
+import .validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.list;
 
@@ -24,6 +25,7 @@ public class Profesor implements Serializable {
     @Column(name= "apellido_materno", length=50, nullable = false)
     private String apellidoM;
 
+    @Pattern(regexp = "^[A-Z&Ñ]{3,4}[0-9]{6}[A-V1-9][A-Z1-9][0-9A]$", message = "El formato de RFC no es valido, Intente De Nuevo")
     @Column(name= "rfc", length=50, nullable = false)
     private String rfc;
 
