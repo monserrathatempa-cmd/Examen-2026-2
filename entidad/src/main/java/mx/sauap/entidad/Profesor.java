@@ -19,6 +19,58 @@ public class Profesor implements Serializable {
     private String nombreProfesor;
 
     @Column(name= "apellido_paterno", length=50, nullable = false)
-    private String nombreProfesor;
+    private String apellidoP;
 
+    @Column(name= "apellido_materno", length=50, nullable = false)
+    private String apellidoM;
+
+    @Column(name= "rfc", length=50, nullable = false)
+    private String rfc;
+
+    @OneToMany(mappedBy = "profesor", FetchType.LAZY)
+    private List<ConsultaDeLasAsignacion> asignaciones;
+
+    public Profesor(){}
+
+    public Integer getIdProfesor() {
+        return idProfesor;
+    }
+    public void setIdProfesor(Integer idProfesor) {
+        this.idProfesor = idProfesor;
+    }
+//
+    public String getNombreProfesor() {
+        return nombreProfesor;
+    }
+    public void setNombreProfesor(String nombreProfesor) {
+        this.nombreProfesor = nombreProfesor;
+    }
+ //
+    public String getApellidoP() {
+        return apellidoP;
+    }
+    public void setApellidoP(String apellidoP) {
+        this.apellidoP = apellidoP;
+    }
+ //
+    public String getApellidoM() {
+        return apellidoM;
+    }
+    public void setApellidoM(String apellidoM) {
+        this.apellidoM = apellidoM;
+    }
+ //
+    public List<ConsultaDeLasAsignacion> getAsignaciones() {
+        return asignaciones;
+    }
+    public void setAsignaciones(List<ConsultaDeLasAsignacion> asignaciones) {
+        this.asignaciones = asignaciones;
+    }
+ //
+    public String getRfc() {
+        return rfc;
+    }
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
 }
