@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 //UNIDAD DE APRENDIZAJE
-public class UnApDAO {
+public class UnidadesDeAprendizajeDAO {
 
     public void guardar(unidadesDeAprendizaje unidad) {
         Transaction tx = null;

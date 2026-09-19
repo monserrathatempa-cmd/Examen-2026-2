@@ -7,41 +7,34 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "Unidades_De_Aprendizaje", schema = "sauap_proyecto")
+@Table(name = "unidades_de_aprendizaje", schema = "sauap_proyecto") // Nombre exacto en BD
 public class unidadesDeAprendizaje implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Unidades_De_Aprendizaje")
+    @Column(name = "id_unidades_de_aprendizaje") // Nombre exacto en BD
     private Integer idUnidadDeAprendizaje;
 
-    @Column(name = "nombre_Unidades_De_Aprendizaje", length = 50, nullable = false)
+    @Column(name = "nombre_unidades_de_aprendizaje", length = 50, nullable = false)
     private String nombreUDA;
 
     @Min(value = 0, message = "No introducir números negativos")
     @Max(value = 4, message = "Máximo de horas 4")
-    @Column(name = "horas_Clase", nullable = false)
+    @Column(name = "horas_clase", nullable = false)
     private Integer horaC;
 
     @Min(value = 0, message = "No introducir números negativos")
     @Max(value = 4, message = "Máximo de horas 4")
-    @Column(name = "horas_Taller", nullable = false)
+    @Column(name = "horas_taller", nullable = false)
     private Integer horaT;
 
     @Min(value = 0, message = "No introducir números negativos")
     @Max(value = 4, message = "Máximo de horas 4")
-    @Column(name = "horas_Laboratorio", nullable = false)
+    @Column(name = "horas_laboratorio", nullable = false)
     private Integer horaL;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "Administrador_id_Administrador",
-            referencedColumnName = "id_Administrador",
-            nullable = false,
-            insertable = false,
-            updatable = false
-    )
+    @JoinColumn(name = "administrador_id_administrador", referencedColumnName = "id_administrador", nullable = false)
     private admin administrador;
 
     @OneToMany(mappedBy = "unidadDeAprendizaje", fetch = FetchType.LAZY)
@@ -49,59 +42,25 @@ public class unidadesDeAprendizaje implements Serializable {
 
     public unidadesDeAprendizaje() {}
 
-    public Integer getIdUnidadDeAprendizaje() {
-        return idUnidadDeAprendizaje;
-    }
+    // Getters y Setters se quedan exactamente igual...
+    public Integer getIdUnidadDeAprendizaje() { return idUnidadDeAprendizaje; }
+    public void setIdUnidadDeAprendizaje(Integer idUnidadDeAprendizaje) { this.idUnidadDeAprendizaje = idUnidadDeAprendizaje; }
 
-    public void setIdUnidadDeAprendizaje(Integer idUnidadDeAprendizaje) {
-        this.idUnidadDeAprendizaje = idUnidadDeAprendizaje;
-    }
+    public String getNombreUDA() { return nombreUDA; }
+    public void setNombreUDA(String nombreUDA) { this.nombreUDA = nombreUDA; }
 
-    public String getNombreUDA() {
-        return nombreUDA;
-    }
+    public Integer getHoraC() { return horaC; }
+    public void setHoraC(Integer horaC) { this.horaC = horaC; }
 
-    public void setNombreUDA(String nombreUDA) {
-        this.nombreUDA = nombreUDA;
-    }
+    public Integer getHoraT() { return horaT; }
+    public void setHoraT(Integer horaT) { this.horaT = horaT; }
 
-    public Integer getHoraC() {
-        return horaC;
-    }
+    public Integer getHoraL() { return horaL; }
+    public void setHoraL(Integer horaL) { this.horaL = horaL; }
 
-    public void setHoraC(Integer horaC) {
-        this.horaC = horaC;
-    }
+    public admin getAdministrador() { return administrador; }
+    public void setAdministrador(admin administrador) { this.administrador = administrador; }
 
-    public Integer getHoraT() {
-        return horaT;
-    }
-
-    public void setHoraT(Integer horaT) {
-        this.horaT = horaT;
-    }
-
-    public Integer getHoraL() {
-        return horaL;
-    }
-
-    public void setHoraL(Integer horaL) {
-        this.horaL = horaL;
-    }
-
-    public admin getAdministrador() {
-        return administrador;
-    }
-
-    public void setAdministrador(admin administrador) {
-        this.administrador = administrador;
-    }
-
-    public List<ConsultaDeLasAsignacion> getAsignaciones() {
-        return asignaciones;
-    }
-
-    public void setAsignaciones(List<ConsultaDeLasAsignacion> asignaciones) {
-        this.asignaciones = asignaciones;
-    }
+    public List<ConsultaDeLasAsignacion> getAsignaciones() { return asignaciones; }
+    public void setAsignaciones(List<ConsultaDeLasAsignacion> asignaciones) { this.asignaciones = asignaciones; }
 }

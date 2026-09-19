@@ -4,20 +4,20 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Administrador", schema = "sauap_proyecto")
+@Table(name = "administrador", schema = "sauap_proyecto")
 public class admin implements Serializable {
-
     @Id
     @Column(name = "id_Administrador")
-    private Integer idAdmin;
+    private Integer idAdministrador;
+
 
     public admin() {}
 
     public Integer getIdAdmin() {
-        return idAdmin;
+        return idAdministrador;
     }
 
     public void setIdAdmin(Integer idAdmin) {
-        this.idAdmin = idAdmin;
+        this.idAdministrador = idAdmin;
     }
 }

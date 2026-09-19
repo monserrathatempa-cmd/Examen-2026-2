@@ -4,44 +4,40 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Profesor_has_Unidades_De_Aprendizaje", schema = "sauap_proyecto")
+@Table(name = "profesor_has_unidades_de_aprendizaje", schema = "sauap_proyecto")
 @IdClass(ConsultaDeLasAsignacionPK.class)
 public class ConsultaDeLasAsignacion implements Serializable {
 
     @Id
-    @Column(name = "id_Clase")
+    @Column(name = "id_clase")
     private Integer idClase;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Profesor_id_Profesor", nullable = false)
+    @JoinColumn(
+            name = "profesor_id_profesor",
+            referencedColumnName = "id_profesor",
+            nullable = false
+    )
     private Profesor profesor;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Unidades_De_Aprendizaje_id_Unidades_De_Aprendizaje", nullable = false)
+    @JoinColumn(
+            name = "unidades_de_aprendizaje_id_unidades_de_aprendizaje",
+            referencedColumnName = "id_unidades_de_aprendizaje",
+            nullable = false
+    )
     private unidadesDeAprendizaje unidadDeAprendizaje;
 
     public ConsultaDeLasAsignacion() {}
 
-    public Integer getIdClase() {
-        return idClase;
-    }
-    public void setIdClase(Integer idClase) {
-        this.idClase = idClase;
-    }
+    public Integer getIdClase() { return idClase; }
+    public void setIdClase(Integer idClase) { this.idClase = idClase; }
 
-    public Profesor getProfesor() {
-        return profesor;
-    }
-    public void setProfesor(Profesor profesor) {
-        this.profesor = profesor;
-    }
+    public Profesor getProfesor() { return profesor; }
+    public void setProfesor(Profesor profesor) { this.profesor = profesor; }
 
-    public unidadesDeAprendizaje getUnidadDeAprendizaje() {
-        return unidadDeAprendizaje;
-    }
-    public void setUnidadDeAprendizaje(unidadesDeAprendizaje unidadDeAprendizaje) {
-        this.unidadDeAprendizaje = unidadDeAprendizaje;
-    }
+    public unidadesDeAprendizaje getUnidadDeAprendizaje() { return unidadDeAprendizaje; }
+    public void setUnidadDeAprendizaje(unidadesDeAprendizaje unidadDeAprendizaje) { this.unidadDeAprendizaje = unidadDeAprendizaje; }
 }

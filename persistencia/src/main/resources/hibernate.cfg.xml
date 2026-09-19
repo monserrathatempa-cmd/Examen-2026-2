@@ -6,7 +6,7 @@
     <session-factory>
 
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/sauap_proyecto?useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/sauap_proyecto?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</property>
         <property name="connection.username">root</property>
         <property name="connection.password">root</property>
 
@@ -15,7 +15,7 @@
         <property name="format_sql">true</property>
 
         <mapping class="mx.sauap.entidad.admin"/>
-        <mapping class="mx.sauap.entidad.ConsultaDeLasAsignacionPK"/>
+        <mapping class="mx.sauap.entidad.Profesor"/>
         <mapping class="mx.sauap.entidad.unidadesDeAprendizaje"/>
         <mapping class="mx.sauap.entidad.ConsultaDeLasAsignacion"/>
 

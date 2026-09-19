@@ -1,16 +1,17 @@
-package java.mx.sauap.persistencia;
+package mx.sauap.persistencia;
 
+import mx.sauap.entidad.ConsultaDeLasAsignacion;
+import mx.sauap.entidad.ConsultaDeLasAsignacionPK;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
-import java.mx.sauap.entidad.ConsultaDeLasAsignacion;
 import java.util.List;
 
 public class AsignacionDAO {
+
     public void guardar(ConsultaDeLasAsignacion asignacion) {
         Transaction tx = null;
-        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
             session.persist(asignacion);
             tx.commit();
@@ -22,63 +23,23 @@ public class AsignacionDAO {
         }
     }
 
-    public void actualizar(ConsultaDeLasAsignacion asignacion) {
-        Transaction tx = null;
-        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            session.merge(asignacion);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            throw e;
-        }
-    }
-
-    public void eliminar(ConsultaDeLasAsignacion asignacion) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            session.remove(session.contains(asignacion) ? asignacion : session.merge(asignacion));
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            throw e;
-        }
-    }
-
     public List<ConsultaDeLasAsignacion> obtenerTodas() {
-        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM ConsultaDeLasAsignacion", ConsultaDeLasAsignacion.class).getResultList();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM ConsultaDeLasAsignacion", ConsultaDeLasAsignacion.class).list();
         }
     }
 
-    public List<ConsultaDeLasAsignacion> obtenerPorProfesor(Integer idProfesor) {
-        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM ConsultaDeLasAsignacion a WHERE a.profesor.idProfesor = :idProf";
-            Query<ConsultaDeLasAsignacion> query = session.createQuery(hql, ConsultaDeLasAsignacion.class);
-            query.setParameter("idProf", idProfesor);
-            return query.getResultList();
-        }
-    }
-
-    public boolean existeTraslapeHorario(Integer idProfesor, String dia, String horaInicio, String horaFin) {
-        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
+    public boolean existeClase(Integer idProfesor, Integer idUnidad, Integer idClase) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "SELECT COUNT(a) FROM ConsultaDeLasAsignacion a " +
                     "WHERE a.profesor.idProfesor = :idProf " +
-                    "AND a.dia = :dia " +
-                    "AND ((:horaInicio >= a.horaInicio AND :horaInicio < a.horaFin) OR " +
-                    "     (:horaFin > a.horaInicio AND :horaFin <= a.horaFin) OR " +
-                    "     (a.horaInicio >= :horaInicio AND a.horaInicio < :horaFin))";
+                    "AND a.unidadDeAprendizaje.idUnidadDeAprendizaje = :idUnidad " +
+                    "AND a.idClase = :idClase";
 
             Query<Long> query = session.createQuery(hql, Long.class);
             query.setParameter("idProf", idProfesor);
-            query.setParameter("dia", dia);
-            query.setParameter("horaInicio", horaInicio);
-            query.setParameter("horaFin", horaFin);
+            query.setParameter("idUnidad", idUnidad);
+            query.setParameter("idClase", idClase);
 
             Long count = query.getSingleResult();
             return count > 0;

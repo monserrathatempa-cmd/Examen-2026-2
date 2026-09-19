@@ -4,21 +4,21 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Profesor", schema = "sauap_proyecto")
+@Table(name = "profesor", schema = "sauap_proyecto")
 public class Profesor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Profesor")
+    @Column(name = "id_profesor")
     private Integer idProfesor;
 
-    @Column(name = "nombre_Profesor", length = 50, nullable = false)
+    @Column(name = "nombre_profesor", length = 50, nullable = false)
     private String nombreProfesor;
 
-    @Column(name = "apellido_Paterno", length = 50, nullable = false)
+    @Column(name = "apellido_paterno", length = 50, nullable = false)
     private String apellidoPaterno;
 
-    @Column(name = "apellido_Materno", length = 50, nullable = false)
+    @Column(name = "apellido_materno", length = 50, nullable = false)
     private String apellidoMaterno;
 
     @Column(name = "rfc", length = 15, nullable = false)
