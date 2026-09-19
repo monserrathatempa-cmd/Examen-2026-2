@@ -9,13 +9,14 @@ public class admin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_administrador")
-    private Long id;
+    private Interge idAdmin;
+    public admin(){}
 
-    public Long getId() {
-        return id;
+    public Interge getIdAdmin() {
+        return idAdmin;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdAdmin(Interge idAdmin) {
+        this.idAdmin = idAdmin;
     }
 }
