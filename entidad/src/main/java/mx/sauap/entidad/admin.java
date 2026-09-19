@@ -4,19 +4,20 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="administrador", schema = "SUAP_PROYECTO")
+@Table(name = "Administrador", schema = "sauap_proyecto")
 public class admin implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_administrador")
-    private Interge idAdmin;
-    public admin(){}
 
-    public Interge getIdAdmin() {
+    @Id
+    @Column(name = "id_Administrador")
+    private Integer idAdmin;
+
+    public admin() {}
+
+    public Integer getIdAdmin() {
         return idAdmin;
     }
 
-    public void setIdAdmin(Interge idAdmin) {
+    public void setIdAdmin(Integer idAdmin) {
         this.idAdmin = idAdmin;
     }
 }

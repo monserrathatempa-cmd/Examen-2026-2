@@ -7,82 +7,96 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name= "Unidades_De_Aprendizaje", schema ="sauap_proyecto")
+@Table(name = "Unidades_De_Aprendizaje", schema = "sauap_proyecto")
+public class unidadesDeAprendizaje implements Serializable {
 
-
-public class unidadesDeAprendizaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name="nombre_Unidades_De_Aprendizaje")
-    private Iteger idUnidadDeAprendizaje;
+    @Column(name = "id_Unidades_De_Aprendizaje")
+    private Integer idUnidadDeAprendizaje;
 
-    @Column (name="nombre_Unidades_De_Aprendizaje", lenght = 50, nullable =false)
-    private String nombreUDA; //UAD: UNIDAD DE APRENDIZAJE
-    @Min(value = 0, messege = "no introducir numeros nengativos")
-    @Max(value = 4, messege = "Maximo de horas 4")
-    @Column (name="hora_De_Clase", nullable = false) //hora de clase
-    private Iteger horaC;
+    @Column(name = "nombre_Unidades_De_Aprendizaje", length = 50, nullable = false)
+    private String nombreUDA;
 
-    @Min(value = 0, messege = "no introducir numeros nengativos")
-    @Max(value = 4, messege = "Maximo de horas 4")
-    @Column (name="hora_De_Taller", nullable = false) //horas de taller
-    private Iteger horaT;
+    @Min(value = 0, message = "No introducir números negativos")
+    @Max(value = 4, message = "Máximo de horas 4")
+    @Column(name = "horas_Clase", nullable = false)
+    private Integer horaC;
 
-    @Min(value = 0, messege = "no introducir numeros nengativos")
-    @Max(value = 4, messege = "Maximo de horas 4")
-    @Column (name="horas_De_Laboratorio", nullable = false)//horas de laboratorio
-    private Iteger horaL;
+    @Min(value = 0, message = "No introducir números negativos")
+    @Max(value = 4, message = "Máximo de horas 4")
+    @Column(name = "horas_Taller", nullable = false)
+    private Integer horaT;
 
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="Administrador_id_Adminstrador" nullable = false)
+    @Min(value = 0, message = "No introducir números negativos")
+    @Max(value = 4, message = "Máximo de horas 4")
+    @Column(name = "horas_Laboratorio", nullable = false)
+    private Integer horaL;
+
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "Administrador_id_Administrador",
+            referencedColumnName = "id_Administrador",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     private admin administrador;
-    @OneToMany(mappedBy = "UnidadDeApredizaje", fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "unidadDeAprendizaje", fetch = FetchType.LAZY)
     private List<ConsultaDeLasAsignacion> asignaciones;
 
-    public UnidadesDeApredizaje(){}
+    public unidadesDeAprendizaje() {}
 
-    public Iteger getIdUnidadDeAprendizaje() {
+    public Integer getIdUnidadDeAprendizaje() {
         return idUnidadDeAprendizaje;
     }
-    public void setIdUnidadDeAprendizaje(Iteger idUnidadDeAprendizaje) {
+
+    public void setIdUnidadDeAprendizaje(Integer idUnidadDeAprendizaje) {
         this.idUnidadDeAprendizaje = idUnidadDeAprendizaje;
     }
- //
+
     public String getNombreUDA() {
         return nombreUDA;
     }
+
     public void setNombreUDA(String nombreUDA) {
         this.nombreUDA = nombreUDA;
     }
- //
-    public Iteger getHoraC() {
+
+    public Integer getHoraC() {
         return horaC;
     }
-    public void setHoraC(Iteger horaC) {
+
+    public void setHoraC(Integer horaC) {
         this.horaC = horaC;
     }
- //
-    public Iteger getHoraL() {
-        return horaL;
-    }
-    public void setHoraL(Iteger horaL) {
-        this.horaL = horaL;
-    }
- //
-    public Iteger getHoraT() {
+
+    public Integer getHoraT() {
         return horaT;
     }
-    public void setHoraT(Iteger horaT) {
+
+    public void setHoraT(Integer horaT) {
         this.horaT = horaT;
     }
- //
+
+    public Integer getHoraL() {
+        return horaL;
+    }
+
+    public void setHoraL(Integer horaL) {
+        this.horaL = horaL;
+    }
+
     public admin getAdministrador() {
         return administrador;
     }
+
     public void setAdministrador(admin administrador) {
         this.administrador = administrador;
     }
- //
+
     public List<ConsultaDeLasAsignacion> getAsignaciones() {
         return asignaciones;
     }

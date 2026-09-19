@@ -1,16 +1,16 @@
-package mx.sauap.persistencia;
+package java.mx.sauap.persistencia;
 
-import mx.sauap.entidad.ConsultaDeLasAsignacion;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.mx.sauap.entidad.ConsultaDeLasAsignacion;
 import java.util.List;
 
 public class AsignacionDAO {
     public void guardar(ConsultaDeLasAsignacion asignacion) {
         Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
             session.persist(asignacion);
             tx.commit();
@@ -24,7 +24,7 @@ public class AsignacionDAO {
 
     public void actualizar(ConsultaDeLasAsignacion asignacion) {
         Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
             session.merge(asignacion);
             tx.commit();
@@ -51,13 +51,13 @@ public class AsignacionDAO {
     }
 
     public List<ConsultaDeLasAsignacion> obtenerTodas() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM ConsultaDeLasAsignacion", ConsultaDeLasAsignacion.class).getResultList();
         }
     }
 
     public List<ConsultaDeLasAsignacion> obtenerPorProfesor(Integer idProfesor) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM ConsultaDeLasAsignacion a WHERE a.profesor.idProfesor = :idProf";
             Query<ConsultaDeLasAsignacion> query = session.createQuery(hql, ConsultaDeLasAsignacion.class);
             query.setParameter("idProf", idProfesor);
@@ -66,7 +66,7 @@ public class AsignacionDAO {
     }
 
     public boolean existeTraslapeHorario(Integer idProfesor, String dia, String horaInicio, String horaFin) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
             String hql = "SELECT COUNT(a) FROM ConsultaDeLasAsignacion a " +
                     "WHERE a.profesor.idProfesor = :idProf " +
                     "AND a.dia = :dia " +

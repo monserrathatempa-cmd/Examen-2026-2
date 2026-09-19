@@ -14,5 +14,10 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
 
+        <mapping class="mx.sauap.entidad.admin"/>
+        <mapping class="mx.sauap.entidad.ConsultaDeLasAsignacionPK"/>
+        <mapping class="mx.sauap.entidad.unidadesDeAprendizaje"/>
+        <mapping class="mx.sauap.entidad.ConsultaDeLasAsignacion"/>
+
     </session-factory>
 </hibernate-configuration>

@@ -1,15 +1,15 @@
 package mx.sauap.persistencia;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import mx.sauap.entidad.profesorUA;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import mx.sauap.entidad.ConsultaDeLasAsignacionPK;
 import java.util.List;
 
 
 public class AsignacionDAO {
 
-    public void guardar(profesorUA profesor){
+    public void guardar(ConsultaDeLasAsignacionPK profesor){
     Transaction tx = null;
-    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+    try (Session session = mx.sauap.persistencia.HibernateUtil.getSessionFactory().openSession()) {
         tx = session.beginTransaction();
         session.persist(profesor);
         tx.commit();
@@ -18,9 +18,9 @@ public class AsignacionDAO {
        throw e;
     }
 }
-public List<profesorUA> obtenerTodosOrdenados(){
+public List<ConsultaDeLasAsignacionPK> obtenerTodosOrdenados(){
     try (Session session = hibernateUtil.getSessionFactory().openSession()) {
-        return session.createQuery("FROM profesorUA p ORDER BY p.nombreProfesor ASC",profesorUA.class)
+        return session.createQuery("FROM profesorUA p ORDER BY p.nombreProfesor ASC", ConsultaDeLasAsignacionPK.class)
 
     }
  }

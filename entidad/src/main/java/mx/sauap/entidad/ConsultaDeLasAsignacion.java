@@ -15,7 +15,7 @@ public class ConsultaDeLasAsignacion implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Profesor_id_Profesor", nullable = false)
-    private profesorUA profesor;
+    private Profesor profesor;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,12 +24,24 @@ public class ConsultaDeLasAsignacion implements Serializable {
 
     public ConsultaDeLasAsignacion() {}
 
-    public Integer getIdClase() { return idClase; }
-    public void setIdClase(Integer idClase) { this.idClase = idClase; }
+    public Integer getIdClase() {
+        return idClase;
+    }
+    public void setIdClase(Integer idClase) {
+        this.idClase = idClase;
+    }
 
-    public profesorUA getProfesor() { return profesor; }
-    public void setProfesor(profesorUA profesor) { this.profesor = profesor; }
+    public Profesor getProfesor() {
+        return profesor;
+    }
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
 
-    public unidadesDeAprendizaje getUnidadDeAprendizaje() { return unidadDeAprendizaje; }
-    public void setUnidadDeAprendizaje(unidadesDeAprendizaje unidadDeAprendizaje) { this.unidadDeAprendizaje = unidadDeAprendizaje; }
+    public unidadesDeAprendizaje getUnidadDeAprendizaje() {
+        return unidadDeAprendizaje;
+    }
+    public void setUnidadDeAprendizaje(unidadesDeAprendizaje unidadDeAprendizaje) {
+        this.unidadDeAprendizaje = unidadDeAprendizaje;
+    }
 }
