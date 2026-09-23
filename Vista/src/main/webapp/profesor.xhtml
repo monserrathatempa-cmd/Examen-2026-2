@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>SAUAP - Profesores</title>
+    <meta charset="UTF-8"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="frmProfesor">
+
+        <p:growl id="growl" showDetail="true" life="4000"/>
+
+        <p:panel header="Alta de Profesor" style="margin-bottom: 20px;">
+
+            <p:panelGrid columns="2" layout="grid" style="width: 100%;">
+
+                <p:outputLabel for="nombre" value="Nombre"/>
+                <p:inputText id="nombre"
+                             value="#{profesorBeanUI.profesor.nombreProfesor}"
+                             required="true"
+                             requiredMessage="El nombre es obligatorio."
+                             maxlength="50"/>
+
+                <p:outputLabel for="apellidoPaterno" value="Apellido paterno"/>
+                <p:inputText id="apellidoPaterno"
+                             value="#{profesorBeanUI.profesor.apellidoPaterno}"
+                             required="true"
+                             requiredMessage="El apellido paterno es obligatorio."
+                             maxlength="50"/>
+
+                <p:outputLabel for="apellidoMaterno" value="Apellido materno"/>
+                <p:inputText id="apellidoMaterno"
+                             value="#{profesorBeanUI.profesor.apellidoMaterno}"
+                             required="true"
+                             requiredMessage="El apellido materno es obligatorio."
+                             maxlength="50"/>
+
+                <p:outputLabel for="rfc" value="RFC"/>
+                <p:inputText id="rfc"
+                             value="#{profesorBeanUI.profesor.rfc}"
+                             required="true"
+                             requiredMessage="El RFC es obligatorio."
+                             maxlength="15"
+                             placeholder="Ej. PELJ850101XXX"
+                             style="text-transform: uppercase;"/>
+
+            </p:panelGrid>
+
+            <br/>
+
+            <p:commandButton value="Guardar"
+                             action="#{profesorBeanUI.guardar()}"
+                             update="growl tablaProfesores"
+                             icon="pi pi-save"/>
+
+            <p:commandButton value="Limpiar"
+                             action="#{profesorBeanUI.limpiar()}"
+                             update="@form"
+                             icon="pi pi-times"
+                             style="margin-left: 10px;"
+                             immediate="true"/>
+
+        </p:panel>
+
+        <p:panel header="Profesores registrados">
+
+            <p:dataTable id="tablaProfesores"
+                         var="p"
+                         value="#{profesorBeanUI.listaProfesores}"
+                         emptyMessage="No hay profesores registrados."
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,20">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{p.idProfesor}"/>
+                </p:column>
+
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{p.nombreProfesor}"/>
+                </p:column>
+
+                <p:column headerText="Apellido paterno">
+                    <h:outputText value="#{p.apellidoPaterno}"/>
+                </p:column>
+
+                <p:column headerText="Apellido materno">
+                    <h:outputText value="#{p.apellidoMaterno}"/>
+                </p:column>
+
+                <p:column headerText="RFC">
+                    <h:outputText value="#{p.rfc}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+
+    </h:form>
+
+</h:body>
+</html>

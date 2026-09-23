@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>SAUAP - Inicio</title>
+    <meta charset="UTF-8"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="frmMenu">
+
+        <p:menubar style="margin-bottom: 20px;">
+            <p:submenu label="SAUAP" icon="pi pi-home">
+                <p:menuitem value="Inicio" outcome="index" ajax="false"/>
+            </p:submenu>
+
+            <p:submenu label="Catálogos" icon="pi pi-database">
+                <p:menuitem value="Profesores"
+                            outcome="profesor"
+                            icon="pi pi-users"
+                            ajax="false"/>
+                <p:menuitem value="Unidades de Aprendizaje"
+                            outcome="unidades"
+                            icon="pi pi-book"
+                            ajax="false"/>
+            </p:submenu>
+
+            <p:submenu label="Operación" icon="pi pi-cog">
+                <p:menuitem value="Asignaciones"
+                            outcome="asignaciones"
+                            icon="pi pi-link"
+                            ajax="false"/>
+            </p:submenu>
+
+            <p:submenu label="Sesión" icon="pi pi-user" style="margin-left: auto;">
+                <p:menuitem value="Cerrar sesión"
+                            action="#{adminBeanUI.logout()}"
+                            icon="pi pi-sign-out"
+                            ajax="false"/>
+            </p:submenu>
+        </p:menubar>
+
+        <p:panel header="Bienvenido al SAUAP">
+
+            <h2>Sistema de Asignación de Unidades de Aprendizaje a los Profesores</h2>
+
+            <p>Bienvenido, <strong>#{adminBeanUI.nombreAdminLogueado}</strong>.</p>
+
+            <p>Utiliza el menú superior para navegar entre las secciones del sistema:</p>
+
+            <ul>
+                <li><strong>Profesores</strong>: da de alta y consulta el catálogo de profesores.</li>
+                <li><strong>Unidades de Aprendizaje</strong>: gestiona el catálogo de UDAs (alta, baja, cambio y consulta).</li>
+                <li><strong>Asignaciones</strong>: asigna UDAs a profesores y consulta las asignaciones por profesor.</li>
+            </ul>
+
+        </p:panel>
+
+    </h:form>
+
+</h:body>
+</html>

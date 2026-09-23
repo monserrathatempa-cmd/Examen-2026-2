@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>SAUAP - Unidades de Aprendizaje</title>
+    <meta charset="UTF-8"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="frmUnidad">
+
+        <p:growl id="growl" showDetail="true" life="4000"/>
+
+        <p:panel header="#{unidadesBeanUI.modoEdicion ? 'Editar Unidad de Aprendizaje' : 'Alta de Unidad de Aprendizaje'}"
+                 style="margin-bottom: 20px;">
+
+            <p:panelGrid columns="2" layout="grid" style="width: 100%;">
+
+                <p:outputLabel for="nombre" value="Nombre"/>
+                <p:inputText id="nombre"
+                             value="#{unidadesBeanUI.unidad.nombreUDA}"
+                             required="true"
+                             requiredMessage="El nombre es obligatorio."
+                             maxlength="50"/>
+
+                <p:outputLabel for="horaC" value="Horas clase"/>
+                <p:inputNumber id="horaC"
+                               value="#{unidadesBeanUI.unidad.horaC}"
+                               required="true"
+                               requiredMessage="Horas clase es obligatorio."
+                               minValue="0"
+                               maxValue="4"
+                               decimalPlaces="0"/>
+
+                <p:outputLabel for="horaT" value="Horas taller"/>
+                <p:inputNumber id="horaT"
+                               value="#{unidadesBeanUI.unidad.horaT}"
+                               required="true"
+                               requiredMessage="Horas taller es obligatorio."
+                               minValue="0"
+                               maxValue="4"
+                               decimalPlaces="0"/>
+
+                <p:outputLabel for="horaL" value="Horas laboratorio"/>
+                <p:inputNumber id="horaL"
+                               value="#{unidadesBeanUI.unidad.horaL}"
+                               required="true"
+                               requiredMessage="Horas laboratorio es obligatorio."
+                               minValue="0"
+                               maxValue="4"
+                               decimalPlaces="0"/>
+
+            </p:panelGrid>
+
+            <br/>
+
+            <!-- Botones según modo -->
+            <p:commandButton value="Guardar"
+                             action="#{unidadesBeanUI.guardar()}"
+                             update="growl tablaUnidades @form"
+                             icon="pi pi-save"
+                             rendered="#{!unidadesBeanUI.modoEdicion}"/>
+
+            <p:commandButton value="Actualizar"
+                             action="#{unidadesBeanUI.actualizar()}"
+                             update="growl tablaUnidades @form"
+                             icon="pi pi-check"
+                             rendered="#{unidadesBeanUI.modoEdicion}"/>
+
+            <p:commandButton value="Cancelar"
+                             action="#{unidadesBeanUI.cancelar()}"
+                             update="@form"
+                             icon="pi pi-times"
+                             style="margin-left: 10px;"
+                             immediate="true"
+                             rendered="#{unidadesBeanUI.modoEdicion}"/>
+
+        </p:panel>
+
+        <p:panel header="Unidades registradas">
+
+            <p:dataTable id="tablaUnidades"
+                         var="u"
+                         value="#{unidadesBeanUI.listaUnidades}"
+                         emptyMessage="No hay unidades registradas."
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,20">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{u.idUnidadDeAprendizaje}"/>
+                </p:column>
+
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{u.nombreUDA}"/>
+                </p:column>
+
+                <p:column headerText="H. Clase">
+                    <h:outputText value="#{u.horaC}"/>
+                </p:column>
+
+                <p:column headerText="H. Taller">
+                    <h:outputText value="#{u.horaT}"/>
+                </p:column>
+
+                <p:column headerText="H. Laboratorio">
+                    <h:outputText value="#{u.horaL}"/>
+                </p:column>
+
+                <p:column headerText="Acciones" style="width: 160px;">
+                    <p:commandButton icon="pi pi-pencil"
+                                     title="Editar"
+                                     action="#{unidadesBeanUI.prepararEdicion(u)}"
+                                     update="@form"
+                                     process="@this"
+                                     styleClass="ui-button-warning"/>
+                    <p:commandButton icon="pi pi-trash"
+                                     title="Eliminar"
+                                     action="#{unidadesBeanUI.eliminar(u)}"
+                                     update="growl tablaUnidades"
+                                     process="@this"
+                                     styleClass="ui-button-danger"
+                                     style="margin-left: 5px;">
+                        <p:confirm header="Confirmar"
+                                   message="¿Estás seguro de eliminar esta unidad?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+        </p:confirmDialog>
+
+    </h:form>
+
+</h:body>
+</html>

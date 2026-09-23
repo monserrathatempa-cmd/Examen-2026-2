@@ -1,7 +1,8 @@
 package mx.sauap.delegate;
 
-import mx.sauap.entidad.ConsultaDeLasAsignacion;
+import mx.sauap.entidad.Asignacion;
 import mx.sauap.persistencia.AsignacionDAO;
+
 import java.util.List;
 
 public class AsignacionDelegate {
@@ -12,31 +13,45 @@ public class AsignacionDelegate {
         this.asignacionDAO = new AsignacionDAO();
     }
 
-    public void guardarAsignacion(ConsultaDeLasAsignacion asignacion) throws Exception {
-        if (asignacion.getIdClase() == null) {
-            throw new IllegalArgumentException("El ID de la clase es obligatorio.");
+    public void guardarAsignacion(Asignacion asignacion) throws Exception {
+        if (asignacion.getProfesor() == null
+                || asignacion.getProfesor().getIdProfesor() == null) {
+            throw new IllegalArgumentException("Debe seleccionar un profesor.");
         }
-        if (asignacion.getProfesor() == null || asignacion.getProfesor().getIdProfesor() == null) {
-            throw new IllegalArgumentException("Debe asociar un profesor válido.");
+        if (asignacion.getUnidadDeAprendizaje() == null
+                || asignacion.getUnidadDeAprendizaje().getIdUnidadDeAprendizaje() == null) {
+            throw new IllegalArgumentException("Debe seleccionar una unidad de aprendizaje.");
         }
-        if (asignacion.getUnidadDeAprendizaje() == null || asignacion.getUnidadDeAprendizaje().getIdUnidadDeAprendizaje() == null) {
-            throw new IllegalArgumentException("Debe asociar una unidad de aprendizaje válida.");
+        if (asignacion.getPeriodo() == null || asignacion.getPeriodo().trim().isEmpty()) {
+            throw new IllegalArgumentException("El periodo es obligatorio.");
         }
 
-        boolean existe = asignacionDAO.existeClase(
+        String periodo = asignacion.getPeriodo().trim();
+
+        boolean existe = asignacionDAO.existeAsignacion(
                 asignacion.getProfesor().getIdProfesor(),
                 asignacion.getUnidadDeAprendizaje().getIdUnidadDeAprendizaje(),
-                asignacion.getIdClase()
+                periodo
         );
 
         if (existe) {
-            throw new IllegalStateException("Esta asignación de clase ya se encuentra registrada.");
+            throw new IllegalStateException(
+                    "Traslape detectado: esta unidad ya está asignada al profesor " +
+                            "en el periodo " + periodo + ".");
         }
 
+        asignacion.setPeriodo(periodo);
         asignacionDAO.guardar(asignacion);
     }
 
-    public List<ConsultaDeLasAsignacion> obtenerTodasAsignaciones() {
+    public void eliminarAsignacion(Asignacion asignacion) throws Exception {
+        if (asignacion == null || asignacion.getIdAsignacion() == null) {
+            throw new IllegalArgumentException("La asignación a eliminar no es válida.");
+        }
+        asignacionDAO.eliminar(asignacion);
+    }
+
+    public List<Asignacion> obtenerTodasAsignaciones() {
         return asignacionDAO.obtenerTodas();
     }
 }

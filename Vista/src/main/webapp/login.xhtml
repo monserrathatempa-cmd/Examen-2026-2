@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets">
+
+<h:head>
+    <title>SAUAP - Iniciar sesión</title>
+    <meta charset="UTF-8"/>
+</h:head>
+
+<h:body style="background-color: #f0f0f0;">
+
+    <div style="width: 400px; margin: 100px auto;">
+
+        <p:card style="width: 100%;">
+            <f:facet name="title">
+                <h:outputText value="SAUAP"/>
+            </f:facet>
+
+            <h:form id="frmLogin">
+
+                <p:growl id="growl" showDetail="true" life="4000"/>
+
+                <p:panelGrid columns="1" layout="grid" style="width: 100%;">
+
+                    <p:outputLabel for="usuario" value="Usuario"/>
+                    <p:inputText id="usuario"
+                                 value="#{adminBeanUI.usuario}"
+                                 required="true"
+                                 requiredMessage="El usuario es obligatorio."
+                                 maxlength="50"
+                                 autocomplete="off"/>
+
+                    <p:outputLabel for="password" value="Contraseña"/>
+                    <p:password id="password"
+                                value="#{adminBeanUI.password}"
+                                required="true"
+                                requiredMessage="La contraseña es obligatoria."
+                                maxlength="100"
+                                feedback="false"/>
+
+                </p:panelGrid>
+
+                <br/>
+
+                <p:commandButton value="Iniciar sesión"
+                                 action="#{adminBeanUI.login()}"
+                                 update="growl"
+                                 style="width: 100%;"/>
+
+            </h:form>
+        </p:card>
+
+    </div>
+
+</h:body>
+</html>

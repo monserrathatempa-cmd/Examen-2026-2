@@ -3,7 +3,7 @@ package mx.sauap.main;
 import mx.sauap.integration.ServiceFacadeLocator;
 import mx.sauap.entidad.Profesor;
 import mx.sauap.entidad.unidadesDeAprendizaje;
-import mx.sauap.entidad.ConsultaDeLasAsignacion;
+import mx.sauap.entidad.Asignacion;
 
 import java.util.List;
 
@@ -48,7 +48,6 @@ public class Main {
             nuevaUnidad.setHoraT(2);
             nuevaUnidad.setHoraL(1);
 
-            // El delegate le asignará el Administrador por defecto (ID: 1)
             ServiceFacadeLocator.getInstanceFacadeUnidadesDeAprendizaje().guardarUnidad(nuevaUnidad);
             System.out.println("✔ Unidad guardada exitosamente: " + nuevaUnidad.getNombreUDA());
 
@@ -69,23 +68,24 @@ public class Main {
                 Profesor profAsignado = listaProfesores.get(0);
                 unidadesDeAprendizaje unidadAsignada = listaUnidades.get(0);
 
-                ConsultaDeLasAsignacion asignacion = new ConsultaDeLasAsignacion();
-                asignacion.setIdClase(101); // ID de grupo / clase
+                Asignacion asignacion = new Asignacion();
                 asignacion.setProfesor(profAsignado);
                 asignacion.setUnidadDeAprendizaje(unidadAsignada);
+                asignacion.setPeriodo("2026-1");
 
                 ServiceFacadeLocator.getInstanceFacadeAsignacion().guardarAsignacion(asignacion);
                 System.out.println("✔ Asignación registrada exitosamente.");
 
-                List<ConsultaDeLasAsignacion> listaAsignaciones = ServiceFacadeLocator.getInstanceFacadeAsignacion().obtenerTodasAsignaciones();
+                List<Asignacion> listaAsignaciones = ServiceFacadeLocator.getInstanceFacadeAsignacion().obtenerTodasAsignaciones();
                 System.out.println("✔ Total de asignaciones: " + listaAsignaciones.size());
-                for (ConsultaDeLasAsignacion a : listaAsignaciones) {
-                    System.out.println("   - Clase: " + a.getIdClase()
-                            + " | Prof ID: " + a.getProfesor().getIdProfesor()
-                            + " | UDA ID: " + a.getUnidadDeAprendizaje().getIdUnidadDeAprendizaje());
+                for (Asignacion a : listaAsignaciones) {
+                    System.out.println("   - ID: " + a.getIdAsignacion()
+                            + " | Profesor: " + a.getProfesor().getNombreProfesor()
+                            + " | UDA: " + a.getUnidadDeAprendizaje().getNombreUDA()
+                            + " | Periodo: " + a.getPeriodo());
                 }
             } else {
-                System.out.println("️ No hay suficientes datos de profesores o unidades para realizar la prueba de asignación.");
+                System.out.println("⚠ No hay suficientes datos de profesores o unidades para realizar la prueba de asignación.");
             }
 
             System.out.println("\n=================================================");

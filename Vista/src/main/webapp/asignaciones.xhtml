@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>SAUAP - Asignaciones</title>
+    <meta charset="UTF-8"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="frmAsignacion">
+
+        <p:growl id="growl" showDetail="true" life="5000"/>
+
+        <!-- ================= ALTA DE ASIGNACIÓN ================= -->
+        <p:panel header="Asignar Unidad de Aprendizaje a Profesor"
+                 style="margin-bottom: 20px;">
+
+            <p:panelGrid columns="2" layout="grid" style="width: 100%;">
+
+                <p:outputLabel for="profesor" value="Profesor"/>
+                <p:selectOneMenu id="profesor"
+                                 value="#{asignacionBeanUI.idProfesorSeleccionado}"
+                                 required="true"
+                                 requiredMessage="Debe seleccionar un profesor."
+                                 filter="true">
+                    <f:selectItem itemLabel="-- Seleccione un profesor --" itemValue="#{null}" noSelectionOption="true"/>
+                    <f:selectItems value="#{asignacionBeanUI.listaProfesores}"
+                                   var="p"
+                                   itemLabel="#{p.nombreProfesor} #{p.apellidoPaterno} #{p.apellidoMaterno}"
+                                   itemValue="#{p.idProfesor}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="unidad" value="Unidad de aprendizaje"/>
+                <p:selectOneMenu id="unidad"
+                                 value="#{asignacionBeanUI.idUnidadSeleccionada}"
+                                 required="true"
+                                 requiredMessage="Debe seleccionar una unidad."
+                                 filter="true">
+                    <f:selectItem itemLabel="-- Seleccione una unidad --" itemValue="#{null}" noSelectionOption="true"/>
+                    <f:selectItems value="#{asignacionBeanUI.listaUnidades}"
+                                   var="u"
+                                   itemLabel="#{u.nombreUDA}"
+                                   itemValue="#{u.idUnidadDeAprendizaje}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="periodo" value="Periodo"/>
+                <p:inputText id="periodo"
+                             value="#{asignacionBeanUI.periodo}"
+                             required="true"
+                             requiredMessage="El periodo es obligatorio."
+                             maxlength="20"
+                             placeholder="Ej. 2026-1"/>
+
+            </p:panelGrid>
+
+            <br/>
+
+            <p:commandButton value="Asignar"
+                             action="#{asignacionBeanUI.guardar()}"
+                             update="growl tablaAsignaciones tablaConsulta @form"
+                             icon="pi pi-plus"/>
+
+            <p:commandButton value="Limpiar"
+                             action="#{asignacionBeanUI.limpiar()}"
+                             update="@form"
+                             icon="pi pi-times"
+                             style="margin-left: 10px;"
+                             immediate="true"/>
+
+        </p:panel>
+
+        <!-- ================= LISTA DE ASIGNACIONES ================= -->
+        <p:panel header="Asignaciones registradas" style="margin-bottom: 20px;">
+
+            <p:dataTable id="tablaAsignaciones"
+                         var="a"
+                         value="#{asignacionBeanUI.listaAsignaciones}"
+                         emptyMessage="No hay asignaciones registradas."
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,20">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{a.idAsignacion}"/>
+                </p:column>
+
+                <p:column headerText="Profesor">
+                    <h:outputText value="#{a.profesor.nombreProfesor} #{a.profesor.apellidoPaterno} #{a.profesor.apellidoMaterno}"/>
+                </p:column>
+
+                <p:column headerText="Unidad">
+                    <h:outputText value="#{a.unidadDeAprendizaje.nombreUDA}"/>
+                </p:column>
+
+                <p:column headerText="Periodo">
+                    <h:outputText value="#{a.periodo}"/>
+                </p:column>
+
+                <p:column headerText="Acciones" style="width: 80px;">
+                    <p:commandButton icon="pi pi-trash"
+                                     title="Eliminar"
+                                     action="#{asignacionBeanUI.eliminar(a)}"
+                                     update="growl tablaAsignaciones tablaConsulta"
+                                     process="@this"
+                                     styleClass="ui-button-danger">
+                        <p:confirm header="Confirmar"
+                                   message="¿Eliminar esta asignación?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+
+        <!-- ================= CONSULTA GENERAL POR PROFESOR ================= -->
+        <p:panel header="Consulta general de asignaciones por profesor">
+
+            <p:dataTable id="tablaConsulta"
+                         var="entry"
+                         value="#{asignacionBeanUI.asignacionesPorProfesor}"
+                         emptyMessage="No hay asignaciones registradas."
+                         rows="10"
+                         paginator="true">
+
+                <p:column headerText="Profesor">
+                    <h:outputText value="#{entry.key.nombreProfesor} #{entry.key.apellidoPaterno} #{entry.key.apellidoMaterno}"/>
+                </p:column>
+
+                <p:column headerText="Unidades asignadas">
+                    <p:dataList value="#{entry.value}" var="asig" type="unordered">
+                        #{asig.unidadDeAprendizaje.nombreUDA}
+                        <h:outputText value=" (Periodo: #{asig.periodo})" style="color: gray; font-size: 0.9em;"/>
+                    </p:dataList>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+        </p:confirmDialog>
+
+    </h:form>
+
+</h:body>
+</html>

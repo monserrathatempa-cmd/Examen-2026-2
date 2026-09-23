@@ -1,7 +1,8 @@
 package mx.sauap.facade;
 
 import mx.sauap.delegate.AsignacionDelegate;
-import mx.sauap.entidad.ConsultaDeLasAsignacion;
+import mx.sauap.entidad.Asignacion;
+
 import java.util.List;
 
 public class AsignacionFacade {
@@ -12,11 +13,15 @@ public class AsignacionFacade {
         this.delegate = new AsignacionDelegate();
     }
 
-    public void guardarAsignacion(ConsultaDeLasAsignacion asignacion) throws Exception {
+    public void guardarAsignacion(Asignacion asignacion) throws Exception {
         delegate.guardarAsignacion(asignacion);
     }
 
-    public List<ConsultaDeLasAsignacion> obtenerTodasAsignaciones() {
+    public void eliminarAsignacion(Asignacion asignacion) throws Exception {
+        delegate.eliminarAsignacion(asignacion);
+    }
+
+    public List<Asignacion> obtenerTodasAsignaciones() {
         return delegate.obtenerTodasAsignaciones();
     }
 }

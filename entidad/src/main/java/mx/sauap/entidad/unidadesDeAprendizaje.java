@@ -4,15 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
-@Table(name = "unidades_de_aprendizaje", schema = "sauap_proyecto") // Nombre exacto en BD
+@Table(name = "unidades_de_aprendizaje", schema = "sauap_proyecto")
 public class unidadesDeAprendizaje implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_unidades_de_aprendizaje") // Nombre exacto en BD
+    @Column(name = "id_unidades_de_aprendizaje")
     private Integer idUnidadDeAprendizaje;
 
     @Column(name = "nombre_unidades_de_aprendizaje", length = 50, nullable = false)
@@ -37,12 +36,8 @@ public class unidadesDeAprendizaje implements Serializable {
     @JoinColumn(name = "administrador_id_administrador", referencedColumnName = "id_administrador", nullable = false)
     private admin administrador;
 
-    @OneToMany(mappedBy = "unidadDeAprendizaje", fetch = FetchType.LAZY)
-    private List<ConsultaDeLasAsignacion> asignaciones;
-
     public unidadesDeAprendizaje() {}
 
-    // Getters y Setters se quedan exactamente igual...
     public Integer getIdUnidadDeAprendizaje() { return idUnidadDeAprendizaje; }
     public void setIdUnidadDeAprendizaje(Integer idUnidadDeAprendizaje) { this.idUnidadDeAprendizaje = idUnidadDeAprendizaje; }
 
@@ -60,7 +55,4 @@ public class unidadesDeAprendizaje implements Serializable {
 
     public admin getAdministrador() { return administrador; }
     public void setAdministrador(admin administrador) { this.administrador = administrador; }
-
-    public List<ConsultaDeLasAsignacion> getAsignaciones() { return asignaciones; }
-    public void setAsignaciones(List<ConsultaDeLasAsignacion> asignaciones) { this.asignaciones = asignaciones; }
 }
