@@ -9,12 +9,10 @@ import mx.sauap.integration.ServiceFacadeLocator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-
 public class ProfesorHelper {
 
-    // RFC mexicano: 3 o 4 letras + 6 dígitos + 3 caracteres alfanuméricos
     private static final Pattern RFC_PATTERN =
-            Pattern.compile("^[A-ZÑ&]{3,4}\\d{6}[A-Z0-9]{3}$");
+            Pattern.compile("^[A-Za-zÑñ&]{3,4}\\d{6}[A-Za-z0-9]{0,3}$");
 
     private final ProfesorFacade facade;
 
@@ -32,11 +30,10 @@ public class ProfesorHelper {
         }
         if (!esRfcValido(profesor.getRfc())) {
             throw new IllegalArgumentException(
-                    "El RFC no tiene el formato correcto (ej. PELJ850101XXX).");
+                    "El RFC no tiene el formato correcto (ej. TOLG900101 o TOLG900101ABC).");
         }
         facade.guardarProfesor(profesor);
     }
-
 
     public List<Profesor> obtenerTodos() {
         return facade.obtenerTodosProfesores();

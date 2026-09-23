@@ -14,26 +14,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Bean de la pantalla de asignaciones.
- * Cubre:
- *   - Alta de asignación con validación de traslape
- *   - Consulta general agrupada por profesor
- *
- * Los dropdowns usan IDs enteros para evitar problemas con converters.
- */
 @Named("asignacionBeanUI")
 @ViewScoped
 public class AsignacionBeanUI implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // Campos del formulario de alta
-    private Integer idProfesorSeleccionado;
-    private Integer idUnidadSeleccionada;
+    private Profesor profesorSeleccionado;
+    private unidadesDeAprendizaje unidadSeleccionada;
     private String periodo;
 
-    // Catálogos
     private List<Profesor> listaProfesores;
     private List<unidadesDeAprendizaje> listaUnidades;
     private List<Asignacion> listaAsignaciones;
@@ -66,17 +56,46 @@ public class AsignacionBeanUI implements Serializable {
         }
     }
 
-    /**
-     * Guarda la asignación. Construye la entidad a partir de los IDs seleccionados.
-     * El delegate valida traslape y lanza excepción si existe.
-     */
+    public List<Profesor> buscarProfesor(String query) {
+        if (listaProfesores == null) return new ArrayList<>();
+        if (query == null || query.trim().isEmpty()) return listaProfesores;
+        String q = query.toLowerCase().trim();
+        List<Profesor> resultado = new ArrayList<>();
+        for (Profesor p : listaProfesores) {
+            if (contiene(p.getNombreProfesor(), q)
+                    || contiene(p.getApellidoPaterno(), q)
+                    || contiene(p.getApellidoMaterno(), q)
+                    || contiene(p.getRfc(), q)) {
+                resultado.add(p);
+            }
+        }
+        return resultado;
+    }
+
+    public List<unidadesDeAprendizaje> buscarUnidad(String query) {
+        if (listaUnidades == null) return new ArrayList<>();
+        if (query == null || query.trim().isEmpty()) return listaUnidades;
+        String q = query.toLowerCase().trim();
+        List<unidadesDeAprendizaje> resultado = new ArrayList<>();
+        for (unidadesDeAprendizaje u : listaUnidades) {
+            if (contiene(u.getNombreUDA(), q)) {
+                resultado.add(u);
+            }
+        }
+        return resultado;
+    }
+
+    private boolean contiene(String valor, String busqueda) {
+        return valor != null && valor.toLowerCase().contains(busqueda);
+    }
+
     public void guardar() {
         try {
-            if (idProfesorSeleccionado == null) {
+            if (profesorSeleccionado == null) {
                 helper.mensajeError("Validación", "Debe seleccionar un profesor.");
                 return;
             }
-            if (idUnidadSeleccionada == null) {
+            if (unidadSeleccionada == null) {
                 helper.mensajeError("Validación", "Debe seleccionar una unidad.");
                 return;
             }
@@ -85,17 +104,9 @@ public class AsignacionBeanUI implements Serializable {
                 return;
             }
 
-            Profesor profesor = buscarProfesor(idProfesorSeleccionado);
-            unidadesDeAprendizaje unidad = buscarUnidad(idUnidadSeleccionada);
-
-            if (profesor == null || unidad == null) {
-                helper.mensajeError("Error", "Profesor o unidad no encontrados.");
-                return;
-            }
-
             Asignacion asignacion = new Asignacion();
-            asignacion.setProfesor(profesor);
-            asignacion.setUnidadDeAprendizaje(unidad);
+            asignacion.setProfesor(profesorSeleccionado);
+            asignacion.setUnidadDeAprendizaje(unidadSeleccionada);
             asignacion.setPeriodo(periodo.trim());
 
             helper.guardar(asignacion);
@@ -103,14 +114,10 @@ public class AsignacionBeanUI implements Serializable {
             limpiar();
             cargarAsignaciones();
         } catch (Exception e) {
-            // Aquí caen los errores de traslape del delegate
             helper.mensajeError("Error al asignar", e.getMessage());
         }
     }
 
-    /**
-     * Elimina una asignación.
-     */
     public void eliminar(Asignacion seleccionada) {
         try {
             helper.eliminar(seleccionada);
@@ -122,29 +129,11 @@ public class AsignacionBeanUI implements Serializable {
     }
 
     public void limpiar() {
-        idProfesorSeleccionado = null;
-        idUnidadSeleccionada = null;
+        profesorSeleccionado = null;
+        unidadSeleccionada = null;
         periodo = null;
     }
 
-    private Profesor buscarProfesor(Integer id) {
-        if (listaProfesores == null) return null;
-        return listaProfesores.stream()
-                .filter(p -> p.getIdProfesor().equals(id))
-                .findFirst().orElse(null);
-    }
-
-    private unidadesDeAprendizaje buscarUnidad(Integer id) {
-        if (listaUnidades == null) return null;
-        return listaUnidades.stream()
-                .filter(u -> u.getIdUnidadDeAprendizaje().equals(id))
-                .findFirst().orElse(null);
-    }
-
-    /**
-     * Agrupa las asignaciones por profesor para la consulta general.
-     * El orden ya viene del DAO (por nombre del profesor).
-     */
     public Map<Profesor, List<Asignacion>> getAsignacionesPorProfesor() {
         Map<Profesor, List<Asignacion>> mapa = new LinkedHashMap<>();
         if (listaAsignaciones == null) return mapa;
@@ -156,53 +145,21 @@ public class AsignacionBeanUI implements Serializable {
         return mapa;
     }
 
-    // Getters y setters
+    public Profesor getProfesorSeleccionado() { return profesorSeleccionado; }
+    public void setProfesorSeleccionado(Profesor profesorSeleccionado) { this.profesorSeleccionado = profesorSeleccionado; }
 
-    public Integer getIdProfesorSeleccionado() {
-        return idProfesorSeleccionado;
-    }
+    public unidadesDeAprendizaje getUnidadSeleccionada() { return unidadSeleccionada; }
+    public void setUnidadSeleccionada(unidadesDeAprendizaje unidadSeleccionada) { this.unidadSeleccionada = unidadSeleccionada; }
 
-    public void setIdProfesorSeleccionado(Integer idProfesorSeleccionado) {
-        this.idProfesorSeleccionado = idProfesorSeleccionado;
-    }
+    public String getPeriodo() { return periodo; }
+    public void setPeriodo(String periodo) { this.periodo = periodo; }
 
-    public Integer getIdUnidadSeleccionada() {
-        return idUnidadSeleccionada;
-    }
+    public List<Profesor> getListaProfesores() { return listaProfesores; }
+    public void setListaProfesores(List<Profesor> listaProfesores) { this.listaProfesores = listaProfesores; }
 
-    public void setIdUnidadSeleccionada(Integer idUnidadSeleccionada) {
-        this.idUnidadSeleccionada = idUnidadSeleccionada;
-    }
+    public List<unidadesDeAprendizaje> getListaUnidades() { return listaUnidades; }
+    public void setListaUnidades(List<unidadesDeAprendizaje> listaUnidades) { this.listaUnidades = listaUnidades; }
 
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public List<Profesor> getListaProfesores() {
-        return listaProfesores;
-    }
-
-    public void setListaProfesores(List<Profesor> listaProfesores) {
-        this.listaProfesores = listaProfesores;
-    }
-
-    public List<unidadesDeAprendizaje> getListaUnidades() {
-        return listaUnidades;
-    }
-
-    public void setListaUnidades(List<unidadesDeAprendizaje> listaUnidades) {
-        this.listaUnidades = listaUnidades;
-    }
-
-    public List<Asignacion> getListaAsignaciones() {
-        return listaAsignaciones;
-    }
-
-    public void setListaAsignaciones(List<Asignacion> listaAsignaciones) {
-        this.listaAsignaciones = listaAsignaciones;
-    }
+    public List<Asignacion> getListaAsignaciones() { return listaAsignaciones; }
+    public void setListaAsignaciones(List<Asignacion> listaAsignaciones) { this.listaAsignaciones = listaAsignaciones; }
 }

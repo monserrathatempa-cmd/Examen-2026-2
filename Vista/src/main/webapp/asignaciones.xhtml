@@ -16,37 +16,44 @@
 
         <p:growl id="growl" showDetail="true" life="5000"/>
 
-        <!-- ================= ALTA DE ASIGNACIÓN ================= -->
         <p:panel header="Asignar Unidad de Aprendizaje a Profesor"
                  style="margin-bottom: 20px;">
 
             <p:panelGrid columns="2" layout="grid" style="width: 100%;">
 
                 <p:outputLabel for="profesor" value="Profesor"/>
-                <p:selectOneMenu id="profesor"
-                                 value="#{asignacionBeanUI.idProfesorSeleccionado}"
-                                 required="true"
-                                 requiredMessage="Debe seleccionar un profesor."
-                                 filter="true">
-                    <f:selectItem itemLabel="-- Seleccione un profesor --" itemValue="#{null}" noSelectionOption="true"/>
-                    <f:selectItems value="#{asignacionBeanUI.listaProfesores}"
-                                   var="p"
-                                   itemLabel="#{p.nombreProfesor} #{p.apellidoPaterno} #{p.apellidoMaterno}"
-                                   itemValue="#{p.idProfesor}"/>
-                </p:selectOneMenu>
+                <p:autoComplete id="profesor"
+                                value="#{asignacionBeanUI.profesorSeleccionado}"
+                                completeMethod="#{asignacionBeanUI.buscarProfesor}"
+                                var="p"
+                                itemLabel="#{p.nombreProfesor} #{p.apellidoPaterno} #{p.apellidoMaterno} — RFC: #{p.rfc}"
+                                itemValue="#{p}"
+                                converter="profesorConverter"
+                                dropdown="true"
+                                forceSelection="true"
+                                required="true"
+                                requiredMessage="Debe seleccionar un profesor."
+                                placeholder="Escriba nombre o RFC del profesor..."
+                                minQueryLength="1"
+                                queryDelay="200"
+                                emptyMessage="No se encontraron profesores"/>
 
                 <p:outputLabel for="unidad" value="Unidad de aprendizaje"/>
-                <p:selectOneMenu id="unidad"
-                                 value="#{asignacionBeanUI.idUnidadSeleccionada}"
-                                 required="true"
-                                 requiredMessage="Debe seleccionar una unidad."
-                                 filter="true">
-                    <f:selectItem itemLabel="-- Seleccione una unidad --" itemValue="#{null}" noSelectionOption="true"/>
-                    <f:selectItems value="#{asignacionBeanUI.listaUnidades}"
-                                   var="u"
-                                   itemLabel="#{u.nombreUDA}"
-                                   itemValue="#{u.idUnidadDeAprendizaje}"/>
-                </p:selectOneMenu>
+                <p:autoComplete id="unidad"
+                                value="#{asignacionBeanUI.unidadSeleccionada}"
+                                completeMethod="#{asignacionBeanUI.buscarUnidad}"
+                                var="u"
+                                itemLabel="#{u.nombreUDA}"
+                                itemValue="#{u}"
+                                converter="unidadConverter"
+                                dropdown="true"
+                                forceSelection="true"
+                                required="true"
+                                requiredMessage="Debe seleccionar una unidad."
+                                placeholder="Escriba el nombre de la unidad..."
+                                minQueryLength="1"
+                                queryDelay="200"
+                                emptyMessage="No se encontraron unidades"/>
 
                 <p:outputLabel for="periodo" value="Periodo"/>
                 <p:inputText id="periodo"
@@ -74,7 +81,6 @@
 
         </p:panel>
 
-        <!-- ================= LISTA DE ASIGNACIONES ================= -->
         <p:panel header="Asignaciones registradas" style="margin-bottom: 20px;">
 
             <p:dataTable id="tablaAsignaciones"
@@ -119,7 +125,6 @@
 
         </p:panel>
 
-        <!-- ================= CONSULTA GENERAL POR PROFESOR ================= -->
         <p:panel header="Consulta general de asignaciones por profesor">
 
             <p:dataTable id="tablaConsulta"
